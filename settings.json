@@ -1,0 +1,14 @@
+{
+    "mail_domain":"gmail",
+    "use_proxies":true,
+    "headless":false,
+    "email_folder_to_search":"inbox",
+    "amount_of_emails_to_check":20,
+    "login":{
+        "username":"",
+        "password":""
+    },
+    "new_account_password":"ZxcuC9Qjskay!",
+    "max_browser_threads":3,
+    "timeout":5
+}
