@@ -80,7 +80,7 @@ Other
 
 A Note from Me
 -------
-You are not required to support me in any while but if you would like to do so I will list ways to below! Thank you everyone for giving my script a try and I hope you found it useful ♥ I'm just about to start diving into javascript and bot protection, if you would like to help/ mentor me feel free to dm! 👀😅
+You are not required to support me in any way but if you would like to do so I will list ways to below! Thank you everyone for giving my script a try and I hope you found it useful ♥ I'm just about to start diving into javascript and bot protection, if you would like to help/ mentor me feel free to dm! 👀😅
 
  If you would like to support me, you can do so by :
 - Following me on twitter https://twitter.com/ayyitsc9
