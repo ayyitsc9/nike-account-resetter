@@ -203,11 +203,11 @@ class AccountReset:
         # Loop through all <a> tags within the email
         for a_tag in self.a_tags:
             # Find <a> tag with the text value "here"
-            if a_tag.text ==  "here":
+            if "here" in a_tag.text and "click" not in a_tag.text:
                 # Get href (link) of the <a> tag
                 self.reset_redirect_link = a_tag['href']
                 # First split is to get the left part of the reset key cut out
-                # Second split is to remove the right part of the resey key
+                # Second split is to remove the right part of the reset key
                 # Result is just the reset key
                 self.reset_key = self.reset_redirect_link.split("%3FresetKey=")[1].split("%")[0]
 
@@ -223,15 +223,15 @@ class AccountReset:
             proxy_details = Proxy.get_proxy(proxy_list)
             if proxy_details[1] == "IP":
                 # Start browser with IP auth proxy
-                browser = await launch({'args': [f'--proxy-server={proxy_details[0]}'], 'headless': headless_setting }, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)
+                browser = await launch({'args': [f'--proxy-server={proxy_details[0]}'], 'headless': headless_setting }, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, logLevel=0)
             elif proxy_details[1] == "UP":
                 # Start browser and apply ip:port of proxy
-                browser = await launch({'args': [f'--proxy-server={proxy_details[0].split(":")[0]}:{proxy_details[0].split(":")[1]}'], 'headless': headless_setting }, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)
+                browser = await launch({'args': [f'--proxy-server={proxy_details[0].split(":")[0]}:{proxy_details[0].split(":")[1]}'], 'headless': headless_setting }, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, logLevel=0)
             else:
                 # Open browser, no proxy
-                browser = await launch({'headless': headless_setting }, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)  
+                browser = await launch({'headless': headless_setting }, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, logLevel=0)  
         else:
-            browser = await launch({'headless': headless_setting}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)
+            browser = await launch({'headless': headless_setting}, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False, logLevel=0)
         # Get pages and set page variable to the first page
         page = await browser.pages()
         page = page[0]
@@ -240,7 +240,7 @@ class AccountReset:
             await page.authenticate({'username': proxy_details[0].split(":")[2], 'password': proxy_details[0].split(":")[3]})
         try:
             global detected, success, failed, queue
-            # Creates browser instance
+            # Creates reset link
             self.reset_link = f"https://unite.nike.com/s3/unite/updatePassword.html?resetKey={self.reset_key}&locale=en_US&redirectUrl=http://www.nike.com&backendEnvironment=identity"
             # Go to reset link and wait until there are no more than 2 connections for at least 500 ms
             await page.goto(self.reset_link, {'waitUntil':'networkidle2'})
@@ -270,7 +270,7 @@ class AccountReset:
                 # Increment global failed variable
                 failed += 1
                 # Add account email and reset url to list (So user can track if only certain accounts failed to reset)
-                failed_to_reset.append([self.nike_account_email, self.reset_link])
+                failed_to_reset.append([self.nike_account_email, self.reset_link if self.reset_link else 'Not detected'])
         except Exception as e:
             # Common errors : Timeout when trying to get element
             Logger.error(f"Failed to reset account! Error : {e}")
@@ -378,8 +378,6 @@ class SendResetEmail:
         # Runs regardless of which of the try or except block execute
         finally:
             await asyncio.sleep(1.5)
-            # Closes page
-            # await page.close()
             # Closes browser
             await browser.close()
             # Removes item from our queue
