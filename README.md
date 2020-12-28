@@ -73,8 +73,7 @@ Other
 - Windows Security or your antivirus may flag the .exe file. This is normal. Just make exception for it to run
 - Bot will create success and failed output files when running [1] and [2] if they are not already present
 - [3] does not create a text file with logs. It will only log to console
-- If you have TSB, it is better to run their account checker with Reset toggled in the bottom right corner
-- If you have other bots that do not have that same feature, then you would need to create a list of the emails you want to send reset emails to and load them in send_reset_emails_to.txt (One email per line) and run [2]
+- Create a list of the emails you want to send reset emails to and load them in send_reset_emails_to.txt (One email per line) and run [2]
 - Have any questions? DM me on twitter! I will try to get back to everyone
 
 
